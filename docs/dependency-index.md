@@ -26,6 +26,20 @@ Dependents:
 ### design (`DESIGN.md`)
 Dependents:
 - `decision-log.md`
+- `design/data-model.md`
+- `design/matching.md`
+- `design/annotations.md`
+
+### design-data-model (`design/data-model.md`)
+Dependents:
+- `design/matching.md`
+- `design/annotations.md`
+
+### design-matching (`design/matching.md`)
+Dependents: none.
+
+### design-annotations (`design/annotations.md`)
+Dependents: none.
 
 ### deferred-and-out-of-scope (`deferred-and-out-of-scope.md`)
 Dependents: none.

@@ -110,24 +110,34 @@ proxy offering) plus Kubernetes DNS/service names. Consequences:
 
 Explicitly not v1: static HTML graph viewer (deferred).
 
-### D5. Evidence corpus: service repos + named platform repos
+### D5. Evidence corpus: service repos + platform repos (inventory confirmed 2026-07-13)
 
-The runner pulls the ~300 service repos **plus** the platform repos that hold
-routing/infra truth (dated docs in `reference_docs_for_design_questions/`
-inform this; verify against current state during implementation):
+The runner analyzes the ~300 service repos **plus** the repos that hold
+routing/infra truth. Local force-synced analysis mirrors exist at
+`~/repositories/` (verygoodsecurity org) and `~/verygood-ops/` (verygood-ops
+org) — analysis copies only, not for dev work.
 
 - `verygood-ops/vgs-gitops`, `verygood-ops/vgs-charts` — Helm charts/values,
   GitOps state, `serviceEnvoy.egress` routing blocks, standardized
-  `vgs-app-sync` chart.
+  `vgs-app-sync` chart. (Note: a `verygood.gitops` repo also exists in the
+  org — vintage/relationship to `vgs-gitops` to verify during extraction.)
 - `verygoodsecurity/platform` — "nearly deprecated" for ~3 years but
-  persists; still an evidence source.
+  persists (Bazel/Go/lambda/infra); still an evidence source.
 - `verygoodsecurity/unified-proxy` — Envoy xDS control plane
   (`route-provider-service` feeds `proxy-ingress-service` from S3-sourced
   state); its *tenant routing is dynamic and not in git* (see D8).
-- Central contract repos per the Golden Path: gRPC/protobuf schemas in the
-  `messages` repo; HTTP API specs in the `product` repo (exact names to
-  confirm).
-- Central Terraform/infra repos (names to confirm).
+- `verygoodsecurity/messages` — central gRPC/protobuf contracts (proto +
+  generated Java/Python); primary gRPC matching anchor.
+- `verygoodsecurity/product` — central HTTP API specs.
+- **Terraform lives across the verygood-ops org**, not in one repo:
+  per-service repos follow a `terraform-aws-vgs-<service>` naming convention
+  (~60 observed, e.g. `terraform-aws-vgs-knox-service`), alongside
+  `terraform-aws-*` library modules (many upstream forks) and
+  `infrastructure-live` / `infrastructure-prod` / `infrastructure-dev`.
+  The naming convention itself seeds service identity (D7).
+- `compass.yml` files (Atlassian Compass component metadata) appear in repos
+  (observed in `messages`) — an additional identity/ownership seeding
+  source.
 
 ### D6. The localhost-dial join: Helm/Envoy config is a required evidence layer
 
@@ -181,24 +191,24 @@ are reported as data, not hidden.
 
 ## Open design questions
 
-1. **Exact platform repo inventory:** confirm names of the central contract
-   repos (`messages`, `product`) and the central Terraform/infra repos;
-   confirm vgs-gitops/vgs-charts are the complete GitOps set.
-2. **Matching semantics and confidence model:** proposed evidence tiers
-   (config-resolved > central-contract-corroborated > shape-match), and how
-   ambiguity is represented rather than guessed. To be drafted for review.
-3. **Fragment and graph schema:** node/edge vocabulary (starting point:
-   Understand-Anything's MIT ontology), provenance fields, stable-ID rules.
-   To be drafted for review.
-4. **Annotation sidecar format:** file layout, keying, merge behavior,
-   validation. To be drafted for review.
-5. **Trust/sensitivity labeling data model** (deferred feature; design must
-   not preclude): label input sources, propagate to functions.
-6. **Orca integration contract** (later phase): confirm/deny static edges from
-   runtime state.
-7. **Glossary structure spec and work-plan checklist format:** required team
-   formats, to be provided by the owner before design acceptance /
-   implementation planning respectively.
+1. **Proposal drafts under review** (owner sign-off pending):
+   [data model](design/data-model.md),
+   [matching & confidence](design/matching.md),
+   [annotations & overrides](design/annotations.md).
+2. **Trust/sensitivity labeling data model** (deferred feature; design must
+   not preclude): label input sources, propagate to functions. The data
+   model reserves attachment points (see data-model proposal §Reserved).
+3. **Orca integration contract** (later phase): confirm/deny static edges
+   from runtime state.
+4. **`verygood.gitops` vs `vgs-gitops`:** which is live; whether both are
+   evidence sources.
+
+Resolved process items: glossary follows the glossarian spec (linted by
+`glossarian-check`; passing as of 2026-07-13). The implementation work plan
+will use the Sedric checklist schema
+(`~/bryant_repos/sedric/docs/schema.json` + `schema.md`, driven by the
+sedric orchestrator CLI) — authored at implementation-planning time, after
+design acceptance.
 
 *(Sections to be written as questions resolve: Architecture, Data Model,
 Extraction Pipeline, Matching & Confidence, Artifact Format, Annotation Layer,
