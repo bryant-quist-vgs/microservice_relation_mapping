@@ -24,7 +24,8 @@ Dependents:
 - `deferred-and-out-of-scope.md`
 
 ### design (`DESIGN.md`)
-Dependents: none yet.
+Dependents:
+- `decision-log.md`
 
 ### deferred-and-out-of-scope (`deferred-and-out-of-scope.md`)
 Dependents: none.

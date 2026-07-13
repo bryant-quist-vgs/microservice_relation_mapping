@@ -12,11 +12,11 @@ code until this document is agreed).
 
 ## Problem statement
 
-~300 microservice repositories (Java, Python, JS/TS, Go, Terraform) whose
-inter-service relationships exist only in code and tribal knowledge. The
-security team needs a durable, regenerable, shareable map of those
-relationships for vulnerability triage (immediate driver: recurring GuardDuty
-SSRF alerts).
+~300 microservice repositories (Java, Python, JS/TS, Go, Terraform) across two
+GitHub organizations, whose inter-service relationships exist only in code and
+tribal knowledge. The security team needs a durable, regenerable, shareable map
+of those relationships for vulnerability triage (immediate driver: recurring
+GuardDuty SSRF alerts).
 
 ## Hard requirements
 
@@ -48,19 +48,91 @@ SSRF alerts).
 - Sidecar prose annotations keyed by stable node IDs, merged at build time.
 - Terraform as a first-class evidence source.
 
-## Open design questions (to be resolved interactively)
+## Resolved design determinations (2026-07-13, with project owner)
 
-1. Artifact topology: single map repo vs per-repo fragments + assembler.
-2. Extraction execution model: central batch runner vs per-repo CI hooks.
-3. v1 protocol/evidence scope and priority order.
-4. Node identity scheme (stable IDs across regenerations).
-5. Matching semantics and confidence model (shape-match collisions at
-   300-repo scale; how ambiguity is represented rather than guessed).
-6. Trust/sensitivity labeling data model (deferred feature; design must not
-   preclude).
-7. Query surfaces: CLI, static HTML viewer, MCP server — which are v1.
-8. Orca integration contract (later phase).
+### D1. Topology and execution: central runner, handoff-ready
 
-*(Sections below will be filled in as the design discussion resolves each
-question: Architecture, Data Model, Extraction Pipeline, Matching, Artifact
-Format, Annotation Layer, Operations.)*
+One map repository owned by the security team. A batch runner pulls all
+repositories from both GitHub organizations, runs per-repo extraction to
+produce a **fragment** file per repository, then runs assembly (cross-repo
+matching) to produce the linked graph. Fragments and the assembled graph are
+committed to the map repo.
+
+The fragment format is a stable contract designed so that, later, individual
+repositories' CI can produce and publish their own fragment without a schema
+change — the assembler must not care who produced a fragment.
+
+Enumeration/ownership patterns adopted from the owner's existing sync tooling
+(`~/tooling/projects/scan_codebase/semgrep_scan_repos.py` — patterns only, not
+the implementation):
+
+- Enumerate repos via the GitHub CLI/API across both orgs; cache listings.
+- Team ownership from GitHub repo custom properties (`team`), validated
+  against a known team list; missing/unknown team is a reported data error,
+  not a silent gap.
+- Skip archived repositories; handle public/private counterpart pairs.
+
+### D2. v1 protocol families (all confirmed in use)
+
+1. **HTTP/REST internal calls** — client call sites and route definitions.
+2. **AWS-native messaging** — SQS/SNS/EventBridge/Kinesis via SDK calls
+   (boto3, aws-sdk JS/Java/Go) *and* Terraform declarations of
+   queues/topics/rules/subscriptions.
+3. **gRPC/protobuf** — proto service contracts, generated-stub call sites,
+   server registrations.
+4. **Kafka / RabbitMQ / NATS** — producer/consumer call sites joined on
+   topic/queue/subject name.
+
+### D3. Discovery and target resolution: Envoy sidecar mesh + Kubernetes DNS
+
+The environment's internal routing runs through **Envoy sidecars** (mTLS,
+tenant-aware routing, cross-cell traffic — core to the company's tokenization
+proxy offering) plus Kubernetes DNS/service names. Consequences:
+
+- Highest-precision edge resolution comes from joining code-level call sites
+  with **Envoy cluster/route configuration and Kubernetes service manifests**,
+  not from route-shape matching. Shape matching (GitNexus-style canonical
+  contract IDs) is the *fallback* tier, not the primary mechanism.
+- **Unresolved outbound targets are first-class nodes**, not discarded noise.
+  In an mTLS sidecar mesh, an outbound HTTP call that does not resolve to a
+  known Envoy cluster or k8s service is inherently suspicious — this bucket is
+  a standing SSRF-suspect inventory and directly serves the GuardDuty driver.
+- Open: where Envoy/k8s config is authored (per-repo, central GitOps repo,
+  control-plane-generated) — see open questions.
+
+### D4. v1 consumption surfaces
+
+1. **CLI query tool** — who-calls-X, path A→B, blast radius; also the
+   interface agents shell out to.
+2. **Per-service Markdown pages** — generated, committed, browsable in GitHub
+   with zero tooling; merged with sidecar prose annotations.
+3. **MCP server** — thin layer over the same query engine as the CLI.
+
+Explicitly not v1: static HTML graph viewer (deferred).
+
+## Open design questions
+
+1. **Config evidence location:** where do Envoy configuration and Kubernetes
+   manifests live (per-service repo, central deploy/GitOps repo,
+   control-plane-generated)? Where does Terraform live (per-service or central
+   infra repos)? Determines which repos the runner must pull beyond the ~300
+   service repos, and whether some routing truth is not in git at all.
+2. **Service identity:** the natural unit of "service" in this org — repo ≈
+   service 1:1? Multi-service repos? Naming key (repo name vs k8s service name
+   vs Envoy cluster name) and the mapping between them. Drives the stable
+   node-ID scheme.
+3. **Matching semantics and confidence model:** evidence tiers (config-resolved
+   > contract-corroborated > shape-match), how ambiguity is represented rather
+   than guessed, and how cell/tenant-aware routing affects edge semantics.
+4. **Fragment and graph schema:** node/edge vocabulary (starting point:
+   Understand-Anything's MIT ontology), provenance fields, stable-ID rules.
+5. **Annotation sidecar format:** file layout, keying, merge behavior,
+   validation.
+6. **Trust/sensitivity labeling data model** (deferred feature; design must
+   not preclude): label input sources, propagate to functions.
+7. **Orca integration contract** (later phase): confirm/deny static edges from
+   runtime state.
+
+*(Sections to be written as questions resolve: Architecture, Data Model,
+Extraction Pipeline, Matching & Confidence, Artifact Format, Annotation Layer,
+Operations.)*
