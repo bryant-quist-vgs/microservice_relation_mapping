@@ -219,3 +219,7 @@ __marimo__/
 
 # Third-party repos cloned for FOSS evaluation — never commit
 foss_repositories/
+
+# Internal reference docs dropped in for design discussion — contain internal
+# details (tenant names, badge tokens); keep untracked unless owner decides otherwise
+reference_docs_for_design_questions/

@@ -110,28 +110,95 @@ proxy offering) plus Kubernetes DNS/service names. Consequences:
 
 Explicitly not v1: static HTML graph viewer (deferred).
 
+### D5. Evidence corpus: service repos + named platform repos
+
+The runner pulls the ~300 service repos **plus** the platform repos that hold
+routing/infra truth (dated docs in `reference_docs_for_design_questions/`
+inform this; verify against current state during implementation):
+
+- `verygood-ops/vgs-gitops`, `verygood-ops/vgs-charts` — Helm charts/values,
+  GitOps state, `serviceEnvoy.egress` routing blocks, standardized
+  `vgs-app-sync` chart.
+- `verygoodsecurity/platform` — "nearly deprecated" for ~3 years but
+  persists; still an evidence source.
+- `verygoodsecurity/unified-proxy` — Envoy xDS control plane
+  (`route-provider-service` feeds `proxy-ingress-service` from S3-sourced
+  state); its *tenant routing is dynamic and not in git* (see D8).
+- Central contract repos per the Golden Path: gRPC/protobuf schemas in the
+  `messages` repo; HTTP API specs in the `product` repo (exact names to
+  confirm).
+- Central Terraform/infra repos (names to confirm).
+
+### D6. The localhost-dial join: Helm/Envoy config is a required evidence layer
+
+In the documented sidecar-egress pattern, application code dials
+`127.0.0.1:<listenPort>`; the true target
+(`<service>.<namespace>.svc.cluster.local`) lives in `serviceEnvoy.egress`
+blocks in Helm values. Consequences:
+
+- Code-level extraction alone cannot resolve these edges. The extractor
+  joins call-site targets (host:port, env-var indirections) against parsed
+  Helm values/Envoy egress config by listen port.
+- Kubernetes FQDNs parse into (service, namespace) — namespace often encodes
+  cell; cells collapse into one logical service node with cell membership as
+  an attribute (see D8).
+- Localhost dials with **no matching egress block** join the
+  unresolved-outbound-target inventory (D3) — as do dials to targets outside
+  the mesh.
+
+### D7. Service identity: first-class service entity with a correctable mapping
+
+Repo ≈ service, but deployed names drift from repo names. Therefore:
+
+- `service` is a first-class node distinct from `repository`.
+- A repo↔service mapping table is **auto-seeded** from evidence (Helm chart
+  names, k8s service names, GitOps app definitions, GH `team` custom
+  property) and **human-correctable** via a committed override file that
+  survives regeneration (same sidecar principle as prose annotations).
+- Deployables that cannot be mapped to a repo (and repos with no deployable)
+  are loudly reported, not silently dropped.
+- Stable node IDs derive from the service identity, not from file paths, so
+  annotations and future trust labels survive refactors.
+
+### D8. Cell/tenant routing is dynamic: map the logical graph
+
+Tenant-aware and cross-cell routing decisions live in the unified-proxy
+control plane (S3-sourced xDS), not in git. The static map models **logical
+service-to-service edges**; per-cell/per-tenant physical routing is out of
+static scope. Where cells are statically enumerable (e.g. Knox cell values
+files), cell membership is recorded as a node attribute. Runtime
+reconciliation via Orca is the designated later evidence source
+(deferred item).
+
+### Design principle: assume heterogeneity, never assume the Golden Path
+
+Owner's observation: up to 7 distinct lambda deployment methods coexist
+(excluding archived repos). The Golden Path (gRPC internal, HTTP external,
+Protobuf+Kafka/SQS async, central contract repos) describes the *standard*,
+not the *population*. Extractors therefore emit evidence with explicit
+confidence and provenance rather than assuming conventions; coverage gaps
+are reported as data, not hidden.
+
 ## Open design questions
 
-1. **Config evidence location:** where do Envoy configuration and Kubernetes
-   manifests live (per-service repo, central deploy/GitOps repo,
-   control-plane-generated)? Where does Terraform live (per-service or central
-   infra repos)? Determines which repos the runner must pull beyond the ~300
-   service repos, and whether some routing truth is not in git at all.
-2. **Service identity:** the natural unit of "service" in this org — repo ≈
-   service 1:1? Multi-service repos? Naming key (repo name vs k8s service name
-   vs Envoy cluster name) and the mapping between them. Drives the stable
-   node-ID scheme.
-3. **Matching semantics and confidence model:** evidence tiers (config-resolved
-   > contract-corroborated > shape-match), how ambiguity is represented rather
-   than guessed, and how cell/tenant-aware routing affects edge semantics.
-4. **Fragment and graph schema:** node/edge vocabulary (starting point:
+1. **Exact platform repo inventory:** confirm names of the central contract
+   repos (`messages`, `product`) and the central Terraform/infra repos;
+   confirm vgs-gitops/vgs-charts are the complete GitOps set.
+2. **Matching semantics and confidence model:** proposed evidence tiers
+   (config-resolved > central-contract-corroborated > shape-match), and how
+   ambiguity is represented rather than guessed. To be drafted for review.
+3. **Fragment and graph schema:** node/edge vocabulary (starting point:
    Understand-Anything's MIT ontology), provenance fields, stable-ID rules.
-5. **Annotation sidecar format:** file layout, keying, merge behavior,
-   validation.
-6. **Trust/sensitivity labeling data model** (deferred feature; design must
+   To be drafted for review.
+4. **Annotation sidecar format:** file layout, keying, merge behavior,
+   validation. To be drafted for review.
+5. **Trust/sensitivity labeling data model** (deferred feature; design must
    not preclude): label input sources, propagate to functions.
-7. **Orca integration contract** (later phase): confirm/deny static edges from
+6. **Orca integration contract** (later phase): confirm/deny static edges from
    runtime state.
+7. **Glossary structure spec and work-plan checklist format:** required team
+   formats, to be provided by the owner before design acceptance /
+   implementation planning respectively.
 
 *(Sections to be written as questions resolve: Architecture, Data Model,
 Extraction Pipeline, Matching & Confidence, Artifact Format, Annotation Layer,
