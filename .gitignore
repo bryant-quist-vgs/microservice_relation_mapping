@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Third-party repos cloned for FOSS evaluation — never commit
+foss_repositories/
