@@ -1,0 +1,12 @@
+# LLM file-size guard — team standard: files < 800 lines (hard), < 500 preferred.
+# Defaults already encode warn=500 / fail=800; restated here so the repo pins
+# its policy even if central defaults change.
+
+[thresholds]
+warn_lines = 500
+fail_lines = 800
+
+[selection]
+# Sedric-driven checklist JSON grows mechanically via the orchestrator CLI and
+# is not line-oriented LLM-maintained prose/code.
+ignore_dirs = ["docs/checklists"]

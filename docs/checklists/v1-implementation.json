@@ -43,7 +43,7 @@
     {
       "id": "0.3",
       "title": "CI pipeline: lint, typecheck, tests, doc gates",
-      "description": "GitHub Actions (or org standard) running ruff, ty, pytest, glossarian-check; fails on files exceeding 800 lines.",
+      "description": "GitHub Actions (or org standard) running ruff, ty, pytest, glossarian-check, and `llm-size-guard check` (repo config: .llm-file-size-guard.toml; warn 500 / fail 800; blocks only on unsuppressed hard-limit findings).",
       "status": "not_started",
       "section": "scaffolding",
       "completability": "llm",
