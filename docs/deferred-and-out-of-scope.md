@@ -19,8 +19,8 @@ not to do (yet). Items move out of this file only via a logged decision.
 | Orca Security runtime-data integration | 2026-07-13 | Design phase will define static-first architecture; Orca ingestion (confirming/denying statically inferred edges from runtime state) is a later evidence source. AWS access is time-gated; Orca is the available window into runtime. |
 | Trust/sensitivity labeling of input sources with propagation to functions | 2026-07-13 | Stated as a strong preference, not v1 requirement. Design must not preclude it (stable node IDs, provenance on edges). |
 | Integration with the separate security-mapping initiative | 2026-07-13 | Compatibility is a design constraint now; actual integration is later work. |
-| glossary structure specification | 2026-07-13 | Owner has a required glossary format; placeholder exists until the spec is provided. |
-| Work-plan checklist format | 2026-07-13 | Owner has a required checklist format; to be provided before implementation planning. |
+| Datastore node kind (shared DB/cache coupling edges) | 2026-07-14 | Confirmed deferred at design review ([ADR-0002](adr/ADR-0002-accept-v1-design.md)); node vocabulary is additive, lands later without schema breakage. |
+| Static HTML graph viewer | 2026-07-13 | Not a v1 surface (DESIGN.md D4); CLI/Markdown/MCP ship first. |
 
 ## Out of scope (not planned)
 

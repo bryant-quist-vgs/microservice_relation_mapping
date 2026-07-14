@@ -6,8 +6,9 @@ derives_from: [design, design-data-model]
 
 # Annotations, Mapping Table, and Overrides
 
-**Status:** DRAFT PROPOSAL — for owner review; not accepted.
-**Document role:** Source of Truth for the human-input layer once accepted.
+**Status:** ACCEPTED 2026-07-14 (owner review;
+[ADR-0002](../adr/ADR-0002-accept-v1-design.md)).
+**Document role:** Source of Truth for the human-input layer.
 Derived from [DESIGN.md](../DESIGN.md) D7 and the [data model](data-model.md).
 
 ## Principle

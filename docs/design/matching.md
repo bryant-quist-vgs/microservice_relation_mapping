@@ -6,9 +6,9 @@ derives_from: [design, design-data-model]
 
 # Matching & Confidence Model
 
-**Status:** DRAFT PROPOSAL — for owner review; not accepted.
-**Document role:** Source of Truth for cross-repo resolution semantics once
-accepted. Derived from [DESIGN.md](../DESIGN.md) D3/D6/D8 and the
+**Status:** ACCEPTED 2026-07-14 (owner review;
+[ADR-0002](../adr/ADR-0002-accept-v1-design.md)).
+**Document role:** Source of Truth for cross-repo resolution semantics. Derived from [DESIGN.md](../DESIGN.md) D3/D6/D8 and the
 [data model](data-model.md).
 
 ## Principle

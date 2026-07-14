@@ -6,9 +6,10 @@ derives_from: [adr-0001-build-new-python-tool]
 
 # Primary Design Document — Microservice Relationship Mapping
 
-**Status:** DRAFT — design phase in progress (interactive; no implementation
-code until this document is agreed).
-**Document role:** Source of Truth for the system design once accepted.
+**Status:** ACCEPTED 2026-07-14 (owner review;
+[ADR-0002](adr/ADR-0002-accept-v1-design.md)). Subsequent changes require a
+logged decision.
+**Document role:** Source of Truth for the system design.
 
 ## Problem statement
 
@@ -191,17 +192,19 @@ are reported as data, not hidden.
 
 ## Open design questions
 
-1. **Proposal drafts under review** (owner sign-off pending):
-   [data model](design/data-model.md),
-   [matching & confidence](design/matching.md),
-   [annotations & overrides](design/annotations.md).
-2. **Trust/sensitivity labeling data model** (deferred feature; design must
+1. **Trust/sensitivity labeling data model** (deferred feature; design must
    not preclude): label input sources, propagate to functions. The data
    model reserves attachment points (see data-model proposal §Reserved).
-3. **Orca integration contract** (later phase): confirm/deny static edges
+2. **Orca integration contract** (later phase): confirm/deny static edges
    from runtime state.
-4. **`verygood.gitops` vs `vgs-gitops`:** which is live; whether both are
-   evidence sources.
+3. **`verygood.gitops` vs `vgs-gitops`:** which is live; whether both are
+   evidence sources. To verify during extraction implementation.
+
+Accepted sub-documents: [data model](design/data-model.md),
+[matching & confidence](design/matching.md),
+[annotations & overrides](design/annotations.md) — all accepted 2026-07-14
+with the unres-identity amendment
+([ADR-0002](adr/ADR-0002-accept-v1-design.md)).
 
 Resolved process items: glossary follows the glossarian spec (linted by
 `glossarian-check`; passing as of 2026-07-13). The implementation work plan

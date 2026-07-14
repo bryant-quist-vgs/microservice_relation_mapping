@@ -6,8 +6,9 @@ derives_from: [design]
 
 # Data Model — Fragments, Graph, and Stable Identity
 
-**Status:** DRAFT PROPOSAL — for owner review; not accepted.
-**Document role:** Source of Truth for the artifact schemas once accepted.
+**Status:** ACCEPTED 2026-07-14 (owner review, with the unres-identity
+amendment; [ADR-0002](../adr/ADR-0002-accept-v1-design.md)).
+**Document role:** Source of Truth for the artifact schemas.
 Derived from [DESIGN.md](../DESIGN.md) determinations D1–D8.
 
 ## Artifact set
