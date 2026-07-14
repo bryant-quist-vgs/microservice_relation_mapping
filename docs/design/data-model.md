@@ -57,9 +57,28 @@ table](annotations.md#the-service-mapping-table). Path normalization: path
 parameters collapse to `{param}`; trailing slashes stripped; case preserved
 for path literals, upper-cased for methods.
 
-`unres:` IDs hash the *call-site signature* (repo, function qualified name,
-callee expression shape) — not file/line — so an unresolved target keeps its
-ID (and its annotations/triage state) across cosmetic moves.
+### Unresolved-target identity (amended per owner review 2026-07-14)
+
+`unres:` IDs hash the *call-site signature*, defined as the tuple:
+
+1. repo,
+2. **namespace, AST-derived** — the declared package (Java, Go), dotted
+   module path (Python), or module specifier (JS/TS); taken from the parse
+   tree, not the filesystem path, wherever the language declares it,
+3. enclosing function/method qualified name,
+4. callee expression shape (normalized).
+
+File and line are always evidence, never identity — so the ID (and its
+annotations/triage state) survives cosmetic moves and line churn.
+
+Collision handling: if two call sites in one repo still produce an
+identical signature (genuinely duplicated code within one namespace), the
+assembler appends a deterministic ordinal suffix (`…/3f9a…#2`), ordered by
+normalized file path then occurrence index within the file, and flags the
+collision group in the assembly report. Ordinal-suffixed IDs are less
+refactor-stable by nature; the report flag tells a human that triage state
+on that group deserves re-verification when the group's membership changes.
+The assembler hard-fails if uniqueness is still violated after suffixing.
 
 ## Node schema
 
