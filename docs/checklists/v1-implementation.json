@@ -8,12 +8,42 @@
       "notes": "Follow team standards: Python via uv/ruff; files < 800 lines (prefer < 500); every script carries a contract and paired tests per the auditable-script process; glossary changes must pass glossarian-check. Design docs are accepted SoT — implementation deviations require a decision-log entry before code."
     },
     "sections": [
-      { "id": "scaffolding", "title": "Project scaffolding", "order": 0, "id_prefix": "0" },
-      { "id": "corpus-identity", "title": "Corpus sync and service identity", "order": 1, "id_prefix": "1" },
-      { "id": "extraction", "title": "Per-repo extraction", "order": 2, "id_prefix": "2" },
-      { "id": "assembly", "title": "Assembly and matching", "order": 3, "id_prefix": "3" },
-      { "id": "surfaces", "title": "Consumption surfaces", "order": 4, "id_prefix": "4" },
-      { "id": "hardening", "title": "First real run and hardening", "order": 5, "id_prefix": "5" }
+      {
+        "id": "scaffolding",
+        "title": "Project scaffolding",
+        "order": 0,
+        "id_prefix": "0"
+      },
+      {
+        "id": "corpus-identity",
+        "title": "Corpus sync and service identity",
+        "order": 1,
+        "id_prefix": "1"
+      },
+      {
+        "id": "extraction",
+        "title": "Per-repo extraction",
+        "order": 2,
+        "id_prefix": "2"
+      },
+      {
+        "id": "assembly",
+        "title": "Assembly and matching",
+        "order": 3,
+        "id_prefix": "3"
+      },
+      {
+        "id": "surfaces",
+        "title": "Consumption surfaces",
+        "order": 4,
+        "id_prefix": "4"
+      },
+      {
+        "id": "hardening",
+        "title": "First real run and hardening",
+        "order": 5,
+        "id_prefix": "5"
+      }
     ]
   },
   "tasks": [
@@ -21,12 +51,27 @@
       "id": "0.1",
       "title": "Initialize uv Python project skeleton",
       "description": "pyproject with uv/ruff/ty/pytest, src layout, pinned minimal deps, repo layout matching data-model.md artifact set. Include pre-commit running ruff + glossarian-check on docs/glossary.md.",
-      "status": "not_started",
+      "status": "in_progress",
       "section": "scaffolding",
       "completability": "llm",
       "priority": "high",
       "effort": "small",
-      "tags": ["python", "tooling"]
+      "tags": [
+        "python",
+        "tooling"
+      ],
+      "session_log": [
+        {
+          "at": "2026-07-16T02:15:07+00:00",
+          "note": "Codex worker attempt 1 completed; thread_id=019f68b0-7d4b-7430-804c-c918dcf1ef1f; turns=1; input_tokens=1642375; cached_input_tokens=1551616; cache_write_input_tokens=0; output_tokens=11625; reasoning_output_tokens=5870",
+          "actor": {
+            "vendor": "openai",
+            "model": "gpt-5.6-terra",
+            "session": "019f68b0-7d4b-7430-804c-c918dcf1ef1f"
+          }
+        }
+      ],
+      "updated_at": "2026-07-16T02:15:07+00:00"
     },
     {
       "id": "0.2",
@@ -37,8 +82,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["0.1"],
-      "tags": ["python", "tree-sitter"]
+      "dependencies": [
+        "0.1"
+      ],
+      "tags": [
+        "python",
+        "tree-sitter"
+      ]
     },
     {
       "id": "0.3",
@@ -49,8 +99,12 @@
       "completability": "llm",
       "priority": "medium",
       "effort": "small",
-      "dependencies": ["0.1"],
-      "tags": ["ci"]
+      "dependencies": [
+        "0.1"
+      ],
+      "tags": [
+        "ci"
+      ]
     },
     {
       "id": "1.1",
@@ -61,8 +115,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["0.1"],
-      "tags": ["github", "identity"]
+      "dependencies": [
+        "0.1"
+      ],
+      "tags": [
+        "github",
+        "identity"
+      ]
     },
     {
       "id": "1.2",
@@ -73,8 +132,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["1.1"],
-      "tags": ["github", "corpus"]
+      "dependencies": [
+        "1.1"
+      ],
+      "tags": [
+        "github",
+        "corpus"
+      ]
     },
     {
       "id": "1.3",
@@ -85,8 +149,12 @@
       "completability": "llm",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["0.1"],
-      "tags": ["schema"]
+      "dependencies": [
+        "0.1"
+      ],
+      "tags": [
+        "schema"
+      ]
     },
     {
       "id": "1.4",
@@ -97,8 +165,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "large",
-      "dependencies": ["1.2", "1.3"],
-      "tags": ["identity"]
+      "dependencies": [
+        "1.2",
+        "1.3"
+      ],
+      "tags": [
+        "identity"
+      ]
     },
     {
       "id": "1.5",
@@ -109,8 +182,13 @@
       "completability": "human_required",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["1.4"],
-      "tags": ["identity", "review"]
+      "dependencies": [
+        "1.4"
+      ],
+      "tags": [
+        "identity",
+        "review"
+      ]
     },
     {
       "id": "2.1",
@@ -121,8 +199,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["0.2", "1.3"],
-      "tags": ["extraction"]
+      "dependencies": [
+        "0.2",
+        "1.3"
+      ],
+      "tags": [
+        "extraction"
+      ]
     },
     {
       "id": "2.2",
@@ -133,8 +216,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "large",
-      "dependencies": ["2.1"],
-      "tags": ["python", "extractor"]
+      "dependencies": [
+        "2.1"
+      ],
+      "tags": [
+        "python",
+        "extractor"
+      ]
     },
     {
       "id": "2.3",
@@ -145,8 +233,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "large",
-      "dependencies": ["2.1"],
-      "tags": ["java", "extractor"]
+      "dependencies": [
+        "2.1"
+      ],
+      "tags": [
+        "java",
+        "extractor"
+      ]
     },
     {
       "id": "2.4",
@@ -157,8 +250,14 @@
       "completability": "llm",
       "priority": "high",
       "effort": "large",
-      "dependencies": ["2.1"],
-      "tags": ["javascript", "typescript", "extractor"]
+      "dependencies": [
+        "2.1"
+      ],
+      "tags": [
+        "javascript",
+        "typescript",
+        "extractor"
+      ]
     },
     {
       "id": "2.5",
@@ -169,8 +268,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "large",
-      "dependencies": ["2.1"],
-      "tags": ["golang", "extractor"]
+      "dependencies": [
+        "2.1"
+      ],
+      "tags": [
+        "golang",
+        "extractor"
+      ]
     },
     {
       "id": "2.6",
@@ -181,8 +285,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "large",
-      "dependencies": ["2.1"],
-      "tags": ["terraform", "extractor"]
+      "dependencies": [
+        "2.1"
+      ],
+      "tags": [
+        "terraform",
+        "extractor"
+      ]
     },
     {
       "id": "2.7",
@@ -193,8 +302,14 @@
       "completability": "llm",
       "priority": "high",
       "effort": "large",
-      "dependencies": ["2.1"],
-      "tags": ["helm", "envoy", "extractor"]
+      "dependencies": [
+        "2.1"
+      ],
+      "tags": [
+        "helm",
+        "envoy",
+        "extractor"
+      ]
     },
     {
       "id": "2.8",
@@ -205,8 +320,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["2.1"],
-      "tags": ["grpc", "extractor"]
+      "dependencies": [
+        "2.1"
+      ],
+      "tags": [
+        "grpc",
+        "extractor"
+      ]
     },
     {
       "id": "3.1",
@@ -217,8 +337,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["1.3"],
-      "tags": ["schema", "assembly"]
+      "dependencies": [
+        "1.3"
+      ],
+      "tags": [
+        "schema",
+        "assembly"
+      ]
     },
     {
       "id": "3.2",
@@ -229,8 +354,14 @@
       "completability": "llm",
       "priority": "high",
       "effort": "large",
-      "dependencies": ["3.1", "2.6", "2.7"],
-      "tags": ["matching"]
+      "dependencies": [
+        "3.1",
+        "2.6",
+        "2.7"
+      ],
+      "tags": [
+        "matching"
+      ]
     },
     {
       "id": "3.3",
@@ -241,8 +372,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["3.1", "2.8"],
-      "tags": ["matching"]
+      "dependencies": [
+        "3.1",
+        "2.8"
+      ],
+      "tags": [
+        "matching"
+      ]
     },
     {
       "id": "3.4",
@@ -253,8 +389,12 @@
       "completability": "llm",
       "priority": "medium",
       "effort": "medium",
-      "dependencies": ["3.1"],
-      "tags": ["matching"]
+      "dependencies": [
+        "3.1"
+      ],
+      "tags": [
+        "matching"
+      ]
     },
     {
       "id": "3.5",
@@ -265,8 +405,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["3.1"],
-      "tags": ["assembly", "annotations"]
+      "dependencies": [
+        "3.1"
+      ],
+      "tags": [
+        "assembly",
+        "annotations"
+      ]
     },
     {
       "id": "3.6",
@@ -277,8 +422,16 @@
       "completability": "llm",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["3.2", "3.3", "3.4", "3.5"],
-      "tags": ["assembly", "report"]
+      "dependencies": [
+        "3.2",
+        "3.3",
+        "3.4",
+        "3.5"
+      ],
+      "tags": [
+        "assembly",
+        "report"
+      ]
     },
     {
       "id": "4.1",
@@ -289,8 +442,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["3.6"],
-      "tags": ["cli", "surface"]
+      "dependencies": [
+        "3.6"
+      ],
+      "tags": [
+        "cli",
+        "surface"
+      ]
     },
     {
       "id": "4.2",
@@ -301,8 +459,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "medium",
-      "dependencies": ["3.6"],
-      "tags": ["markdown", "surface"]
+      "dependencies": [
+        "3.6"
+      ],
+      "tags": [
+        "markdown",
+        "surface"
+      ]
     },
     {
       "id": "4.3",
@@ -313,8 +476,13 @@
       "completability": "llm",
       "priority": "medium",
       "effort": "medium",
-      "dependencies": ["4.1"],
-      "tags": ["mcp", "surface"]
+      "dependencies": [
+        "4.1"
+      ],
+      "tags": [
+        "mcp",
+        "surface"
+      ]
     },
     {
       "id": "5.1",
@@ -325,8 +493,20 @@
       "completability": "llm",
       "priority": "high",
       "effort": "large",
-      "dependencies": ["2.2", "2.3", "2.4", "2.5", "2.6", "2.7", "2.8", "3.6", "1.5"],
-      "tags": ["integration"]
+      "dependencies": [
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5",
+        "2.6",
+        "2.7",
+        "2.8",
+        "3.6",
+        "1.5"
+      ],
+      "tags": [
+        "integration"
+      ]
     },
     {
       "id": "5.2",
@@ -337,8 +517,12 @@
       "completability": "human_required",
       "priority": "high",
       "effort": "large",
-      "dependencies": ["5.1"],
-      "tags": ["review"]
+      "dependencies": [
+        "5.1"
+      ],
+      "tags": [
+        "review"
+      ]
     },
     {
       "id": "5.3",
@@ -349,8 +533,13 @@
       "completability": "llm",
       "priority": "medium",
       "effort": "medium",
-      "dependencies": ["5.2"],
-      "tags": ["matching", "tuning"]
+      "dependencies": [
+        "5.2"
+      ],
+      "tags": [
+        "matching",
+        "tuning"
+      ]
     },
     {
       "id": "5.4",
@@ -361,8 +550,13 @@
       "completability": "llm",
       "priority": "medium",
       "effort": "small",
-      "dependencies": ["5.1"],
-      "tags": ["docs", "ops"]
+      "dependencies": [
+        "5.1"
+      ],
+      "tags": [
+        "docs",
+        "ops"
+      ]
     },
     {
       "id": "5.5",
@@ -373,8 +567,13 @@
       "completability": "llm",
       "priority": "high",
       "effort": "small",
-      "dependencies": ["5.1"],
-      "tags": ["security", "docs"]
+      "dependencies": [
+        "5.1"
+      ],
+      "tags": [
+        "security",
+        "docs"
+      ]
     }
   ]
 }

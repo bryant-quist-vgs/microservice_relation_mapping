@@ -25,6 +25,7 @@ Dependents:
 
 ### design (`DESIGN.md`)
 Dependents:
+- `../README.md`
 - `decision-log.md`
 - `design/data-model.md`
 - `design/matching.md`
@@ -34,6 +35,7 @@ Dependents:
 
 ### design-data-model (`design/data-model.md`)
 Dependents:
+- `../README.md`
 - `design/matching.md`
 - `design/annotations.md`
 - `adr/ADR-0002-accept-v1-design.md`

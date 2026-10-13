@@ -1,0 +1,24 @@
+default_language_version:
+  python: python3.12
+
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check --fix
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+      - id: glossarian-check
+        name: glossarian-check glossary
+        entry: glossarian-check docs/glossary.md
+        language: system
+        files: ^docs/glossary\.md$
+        pass_filenames: false
