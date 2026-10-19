@@ -31,7 +31,7 @@ Dependents:
 - `design/matching.md`
 - `design/annotations.md`
 - `adr/ADR-0002-accept-v1-design.md`
-- `checklists/v1-implementation.json` (sidecar: `checklist-v1-implementation`)
+- `../.checklists/v1-implementation.json` (sidecar: `checklist-v1-implementation`)
 
 ### design-data-model (`design/data-model.md`)
 Dependents:
@@ -39,24 +39,24 @@ Dependents:
 - `design/matching.md`
 - `design/annotations.md`
 - `adr/ADR-0002-accept-v1-design.md`
-- `checklists/v1-implementation.json` (sidecar: `checklist-v1-implementation`)
+- `../.checklists/v1-implementation.json` (sidecar: `checklist-v1-implementation`)
 
 ### design-matching (`design/matching.md`)
 Dependents:
 - `adr/ADR-0002-accept-v1-design.md`
-- `checklists/v1-implementation.json` (sidecar: `checklist-v1-implementation`)
+- `../.checklists/v1-implementation.json` (sidecar: `checklist-v1-implementation`)
 
 ### design-annotations (`design/annotations.md`)
 Dependents:
 - `adr/ADR-0002-accept-v1-design.md`
-- `checklists/v1-implementation.json` (sidecar: `checklist-v1-implementation`)
+- `../.checklists/v1-implementation.json` (sidecar: `checklist-v1-implementation`)
 
 ### adr-0002-accept-v1-design (`adr/ADR-0002-accept-v1-design.md`)
 Dependents:
 - `decision-log.md`
 - `deferred-and-out-of-scope.md`
 
-### checklist-v1-implementation (`checklists/v1-implementation.json`, non-markdown SoT via sidecar)
+### checklist-v1-implementation (`../.checklists/v1-implementation.json`, non-markdown SoT via sidecar)
 Dependents: none. Derived from the accepted design set (design,
 design-data-model, design-matching, design-annotations).
 
