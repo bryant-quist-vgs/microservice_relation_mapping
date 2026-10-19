@@ -9,4 +9,4 @@ fail_lines = 800
 [selection]
 # Sedric-driven checklist JSON grows mechanically via the orchestrator CLI and
 # is not line-oriented LLM-maintained prose/code.
-ignore_dirs = ["docs/checklists"]
+ignore_dirs = [".checklists"]

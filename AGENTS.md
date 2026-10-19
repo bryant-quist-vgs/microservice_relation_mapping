@@ -20,7 +20,7 @@ must remain under 800 lines.
 ## Working rules
 
 - Preserve unrelated and concurrent changes.
-- Never edit `docs/checklists/v1-implementation.json` by hand. Use the
+- Never edit `.checklists/v1-implementation.json` by hand. Use the
   project-local scripts under `scripts/checklist/`.
 - When changing a script, read its sibling `*_contract.md` first, keep the
   script/contract/test trio coherent, and run the paired test.
@@ -40,7 +40,7 @@ Run from the repository root:
 # Read-only environment and checklist status
 scripts/checklist/next_task.sh status
 python3 scripts/checklist/query.py status \
-  docs/checklists/v1-implementation.json --format json
+  .checklists/v1-implementation.json --format json
 
 # Checklist tooling verification (hermetic; no real model or network)
 zsh scripts/checklist/next_task_test.sh
@@ -51,7 +51,14 @@ zsh -n scripts/checklist/next_task.sh
 git diff --check
 git status --short
 
-# Default project verification after Python scaffolding exists
+# sedric_lite quality gates (.sedric-lite.toml [gate].targets, in order)
+make format
+make test
+make type
+make lint
+make docs-lint
+
+# Default project verification
 uv run pre-commit run --all-files
 uv run pytest
 ```
@@ -79,9 +86,10 @@ resolution or operator action. Update or remove stale entries when resolved.
 
 ### Known environment notes
 
-- 2026-07-15: Before task `0.1` creates the Python scaffold,
-  `pyproject.toml` and the default uv verification gate may be absent. Report
-  that bootstrap condition; do not substitute an unrelated gate.
+- 2026-10-19: The docs gate expects `glossarian-check` / `glossarian-gather`
+  on PATH (standalone installer in the sedric repo) and `llm-size-guard` on
+  PATH. On a machine without them, `make docs-lint` fails with command-not-found
+  — install the tools; do not substitute or skip the gate.
 - 2026-07-15: Checklist status may report a missing actor in a fresh shell.
   Read-only commands still work, but checklist writes require the operator to
   provide the documented actor/model/session environment.

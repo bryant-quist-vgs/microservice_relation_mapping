@@ -230,5 +230,9 @@ reference_docs_for_design_questions/
 # MacOS filesystem
 .DS_Store
 
-# shim scripts to drive development 
+# shim scripts to drive development
 scripts/checklist/
+
+# sedric_lite per-task workspace: state files, prompts, feedback, commit
+# messages, PR bodies (DESIGN §5 requires it untracked)
+.assessments/

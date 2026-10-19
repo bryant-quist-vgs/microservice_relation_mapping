@@ -1,0 +1,19 @@
+[checklist]
+path = ".checklists/v1-implementation.json"    # relative to repo root
+sedric_root = "../sedric"                       # repo whose venv has orchestrator.checklist.cli
+
+[gate]
+targets = ["format", "test", "type", "lint", "docs-lint"]   # run in order via `make <target>`
+
+[models]
+worker = "claude-opus-5-5"
+assessor = "claude-opus-5-5"
+vendor = "anthropic"
+
+[feedback]
+required_floor = "informational"   # findings at/above this severity must be fixed: critical|high|medium|low|informational
+max_rounds = 3                     # feedback/re-assessment rounds before escalation
+optional_categories = []           # e.g. ["documentation"] — findings in these axes are reported but not required
+
+[pr]
+base = "main"
