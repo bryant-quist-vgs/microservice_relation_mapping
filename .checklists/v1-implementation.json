@@ -51,7 +51,7 @@
       "id": "0.1",
       "title": "Initialize uv Python project skeleton",
       "description": "pyproject with uv/ruff/ty/pytest, src layout, pinned minimal deps, repo layout matching data-model.md artifact set. Include pre-commit running ruff + glossarian-check on docs/glossary.md.",
-      "status": "in_progress",
+      "status": "completed",
       "section": "scaffolding",
       "completability": "llm",
       "priority": "high",
@@ -64,14 +64,15 @@
         {
           "at": "2026-07-16T02:15:07+00:00",
           "note": "Codex worker attempt 1 completed; thread_id=019f68b0-7d4b-7430-804c-c918dcf1ef1f; turns=1; input_tokens=1642375; cached_input_tokens=1551616; cache_write_input_tokens=0; output_tokens=11625; reasoning_output_tokens=5870",
-          "actor": {
+          "managed_by": {
             "vendor": "openai",
             "model": "gpt-5.6-terra",
             "session": "019f68b0-7d4b-7430-804c-c918dcf1ef1f"
           }
         }
       ],
-      "updated_at": "2026-07-16T02:15:07+00:00"
+      "updated_at": "2026-10-19T21:09:30+00:00",
+      "completed_at": "2026-10-19T21:09:30+00:00"
     },
     {
       "id": "0.2",
